@@ -74,31 +74,10 @@
     }
 
     p {
-      margin: 0 0 24px;
+      margin: 0;
       color: var(--muted-text);
       font-size: 16px;
       line-height: 1.5;
-    }
-
-    .open-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 180px;
-      min-height: 50px;
-      padding: 14px 24px;
-      border-radius: 14px;
-      background: var(--brand-blue);
-      color: #ffffff;
-      font-size: 16px;
-      font-weight: 700;
-      text-decoration: none;
-      box-shadow: 0 8px 20px rgba(7, 91, 131, 0.22);
-    }
-
-    .open-button:focus-visible {
-      outline: 3px solid rgba(7, 91, 131, 0.35);
-      outline-offset: 4px;
     }
 
     .status {
@@ -114,7 +93,7 @@
     <img
       class="logo"
       src="icon-512.png"
-      alt="Barhale logo"
+      alt="Manor Road NOS Bridge Store logo"
       width="150"
       height="150"
     >
@@ -122,16 +101,8 @@
     <h1>Manor Road NOS Bridge Store</h1>
 
     <p id="message">
-      Add this page to your Home Screen for one-tap access.
+      Add this page to your Home Screen for secure one-tap access.
     </p>
-
-    <a
-      class="open-button"
-      id="open-store"
-      href="https://script.google.com/macros/s/AKfycbzFnm8F9VWR-HUAZxSoAUahTgF5bAtaoGh0pbPhbSq8ccK9mgSBgOOoVF4wFj-mmSER/exec"
-    >
-      Open Store
-    </a>
 
     <div class="status" id="status" aria-live="polite"></div>
   </main>
@@ -164,7 +135,7 @@
 
         window.setTimeout(function () {
           window.location.replace(STORE_URL);
-        }, 250);
+        }, 150);
       }
     })();
   </script>
