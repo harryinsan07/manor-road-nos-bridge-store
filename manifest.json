@@ -1,0 +1,24 @@
+{
+  "name": "Manor Road NOS Bridge Store",
+  "short_name": "Manor Road Store",
+  "description": "Secure tool management launcher for Manor Road NOS Bridge Store",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4fbfd",
+  "theme_color": "#075b83",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
