@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#075b83">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -20,10 +19,10 @@
     :root {
       color-scheme: light;
       --brand-blue: #075b83;
-      --brand-dark: #063f5b;
-      --background: #f4fbfd;
-      --muted-text: #526875;
-      --card-background: #ffffff;
+      --page-background: #eef8fb;
+      --text: #17324a;
+      --muted: #607486;
+      --card: #ffffff;
     }
 
     * {
@@ -32,111 +31,169 @@
 
     html,
     body {
-      min-height: 100%;
+      width: 100%;
+      height: 100%;
       margin: 0;
+      padding: 0;
+      overflow: hidden;
+      overscroll-behavior: none;
+      background: var(--page-background);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
     body {
+      min-height: 100dvh;
+    }
+
+    .app-shell {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100dvh;
+      background: var(--page-background);
+    }
+
+    .store-frame {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+      background: var(--page-background);
+    }
+
+    .loading-screen {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
       display: grid;
       place-items: center;
       padding:
-        max(24px, env(safe-area-inset-top))
-        max(20px, env(safe-area-inset-right))
-        max(24px, env(safe-area-inset-bottom))
-        max(20px, env(safe-area-inset-left));
-      background: var(--background);
-      color: var(--brand-dark);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+        calc(24px + env(safe-area-inset-top))
+        calc(24px + env(safe-area-inset-right))
+        calc(24px + env(safe-area-inset-bottom))
+        calc(24px + env(safe-area-inset-left));
+      background:
+        radial-gradient(circle at top, rgba(7, 91, 131, 0.12), transparent 44%),
+        var(--page-background);
+      transition: opacity 180ms ease, visibility 180ms ease;
+    }
+
+    .loading-screen.is-hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .loading-card {
+      width: min(360px, 92vw);
+      padding: 28px 24px;
       text-align: center;
-    }
-
-    main {
-      width: min(100%, 420px);
-      padding: 32px 24px;
-      background: var(--card-background);
-      border-radius: 24px;
-      box-shadow: 0 16px 42px rgba(7, 91, 131, 0.14);
-    }
-
-    .logo {
-      width: 150px;
-      height: 150px;
-      display: block;
-      margin: 0 auto;
       border-radius: 28px;
-      box-shadow: 0 12px 32px rgba(7, 91, 131, 0.22);
+      background: var(--card);
+      box-shadow: 0 18px 50px rgba(7, 91, 131, 0.18);
     }
 
-    h1 {
-      margin: 22px 0 10px;
-      font-size: clamp(24px, 6vw, 30px);
-      line-height: 1.18;
+    .loading-card img {
+      width: 112px;
+      height: 112px;
+      object-fit: contain;
+      border-radius: 24px;
+      display: block;
+      margin: 0 auto 18px;
     }
 
-    p {
+    .loading-card h1 {
       margin: 0;
-      color: var(--muted-text);
+      color: var(--text);
+      font-size: clamp(24px, 7vw, 34px);
+      line-height: 1.08;
+    }
+
+    .loading-card p {
+      margin: 14px 0 0;
+      color: var(--muted);
       font-size: 16px;
-      line-height: 1.5;
+      line-height: 1.45;
     }
 
     .status {
       margin-top: 18px;
-      font-size: 13px;
-      color: var(--muted-text);
+      color: var(--brand-blue);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .fallback {
+      display: none;
+      margin-top: 18px;
+      color: var(--brand-blue);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .fallback.is-visible {
+      display: inline-block;
     }
   </style>
 </head>
 
 <body>
-  <main>
-    <img
-      class="logo"
-      src="icon-512.png"
-      alt="Manor Road NOS Bridge Store logo"
-      width="150"
-      height="150"
-    >
+  <main class="app-shell" aria-label="Manor Road NOS Bridge Store">
+    <iframe
+      id="storeFrame"
+      class="store-frame"
+      title="Manor Road NOS Bridge Store"
+      src="https://script.google.com/macros/s/AKfycbzFnm8F9VWR-HUAZxSoAUahTgF5bAtaoGh0pbPhbSq8ccK9mgSBgOOoVF4wFj-mmSER/exec?source=github-pwa&version=48"
+      allow="clipboard-read; clipboard-write"
+      referrerpolicy="no-referrer"
+    ></iframe>
 
-    <h1>Manor Road NOS Bridge Store</h1>
-
-    <p id="message">
-      Add this page to your Home Screen for secure one-tap access.
-    </p>
-
-    <div class="status" id="status" aria-live="polite"></div>
+    <section id="loadingScreen" class="loading-screen" aria-live="polite">
+      <div class="loading-card">
+        <img src="icon-512.png" alt="Manor Road NOS Bridge Store logo">
+        <h1>Manor Road NOS Bridge Store</h1>
+        <p>Opening secure tool management…</p>
+        <div id="statusText" class="status">Please wait</div>
+        <a
+          id="fallbackLink"
+          class="fallback"
+          href="https://script.google.com/macros/s/AKfycbzFnm8F9VWR-HUAZxSoAUahTgF5bAtaoGh0pbPhbSq8ccK9mgSBgOOoVF4wFj-mmSER/exec?source=github-pwa-fallback"
+        >
+          Open Store
+        </a>
+      </div>
+    </section>
   </main>
 
   <script>
     (function () {
       "use strict";
 
-      var STORE_URL =
-        "https://script.google.com/macros/s/AKfycbzFnm8F9VWR-HUAZxSoAUahTgF5bAtaoGh0pbPhbSq8ccK9mgSBgOOoVF4wFj-mmSER/exec";
+      var frame = document.getElementById("storeFrame");
+      var loadingScreen = document.getElementById("loadingScreen");
+      var statusText = document.getElementById("statusText");
+      var fallbackLink = document.getElementById("fallbackLink");
+      var loaded = false;
 
-      var isIOSStandalone = window.navigator.standalone === true;
-      var isDisplayModeStandalone =
-        window.matchMedia &&
-        window.matchMedia("(display-mode: standalone)").matches;
-
-      var isHomeScreenApp = isIOSStandalone || isDisplayModeStandalone;
-
-      if (isHomeScreenApp) {
-        var message = document.getElementById("message");
-        var status = document.getElementById("status");
-
-        if (message) {
-          message.textContent = "Opening secure tool management…";
-        }
-
-        if (status) {
-          status.textContent = "Please wait";
-        }
+      frame.addEventListener("load", function () {
+        loaded = true;
+        statusText.textContent = "System ready";
 
         window.setTimeout(function () {
-          window.location.replace(STORE_URL);
-        }, 150);
-      }
+          loadingScreen.classList.add("is-hidden");
+        }, 220);
+      });
+
+      window.setTimeout(function () {
+        if (!loaded) {
+          statusText.textContent = "Still loading";
+          fallbackLink.classList.add("is-visible");
+        }
+      }, 10000);
     })();
   </script>
 </body>
